@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  phone String?
+  role String @default("victim")
+  name String?
+  lat Float
+  lng Float
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  volunteer VolunteerProfile?
+  ngo NGOProfile?
+  needs Need[] @relation("ReportedBy")
+}
+
+model VolunteerProfile {
+  id String @id @default(cuid())
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+  skills String @default("")
+  availability Float @default(1.0)
+  languages String @default("")
+  vehicle_access Boolean @default(false)
+  vehicle_type String?
+  tasks_completed Int @default(0)
+  people_helped Int @default(0)
+  rating Float @default(5.0)
+  online Boolean @default(false)
+  assignedNeeds Need[] @relation("AssignedTo")
+}
+
+model NGOProfile {
+  id String @id @default(cuid())
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+  org_name String
+  hq_lat Float
+  hq_lng Float
+  staff_count Int @default(0)
+  resources Resource[]
+}
+
+model Need {
+  id String @id @default(cuid())
+  reported_by_id String
+  reported_by User @relation("ReportedBy", fields: [reported_by_id], references: [id])
+  need_type String @default("other")
+  urgency_level Int @default(50)
+  urgency_label String @default("medium")
+  people_affected Int @default(1)
+  description String?
+  lat Float
+  lng Float
+  triage_score Float?
+  assigned_to_id String?
+  assigned_to VolunteerProfile? @relation("AssignedTo", fields: [assigned_to_id], references: [id])
+  status String @default("pending")
+  created_at DateTime @default(now())
+  completed_at DateTime?
+}
+
+model Resource {
+  id String @id @default(cuid())
+  ngo_id String
+  ngo NGOProfile @relation(fields: [ngo_id], references: [id])
+  resource_type String
+  item_name String
+  quantity Int
+  unit String
+  expiry_date DateTime?
+  lat Float
+  lng Float
+  available Boolean @default(true)
+  created_at DateTime @default(now())
+}
+
+model Announcement {
+  id String @id @default(cuid())
+  created_by String
+  message String
+  urgency String @default("info")
+  target_audience String @default("all")
+  target_region String?
+  target_role String?
+  created_at DateTime @default(now())
+  expires_at DateTime?
+}
+
+model PulseEvent {
+  id String @id @default(cuid())
+  type String @default("emergency")
+  message String
+  lat Float?
+  lng Float?
+  timestamp DateTime @default(now())
+  severity String @default("info")
+}
+
+model RiskZone {
+  id String @id @default(cuid())
+  region String
+  risk_score Float
+  risk_level String @default("green")
+  polygon String
+  forecast_time DateTime
+}
+
+model Scenario {
+  id String @id @default(cuid())
+  name String
+  description String
+  disasterType String
+  severity String
+  affectedPeople Int
+  lat Float
+  lng Float
+  radius Float
+  weather String
+  timeline String
+}

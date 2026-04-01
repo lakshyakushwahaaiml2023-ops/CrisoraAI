@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #0A0C10;         /* Obsidian Dark Background (Mission Control) */
+  --color-brand-primary: #0077FF;    /* Authority Blue */
+  --color-brand-secondary: #3B82F6;  /* Impact Blue */
+  --color-brand-warning: #F59E0B;    /* Standard Amber */
+  --color-brand-success: #10B981;    /* Standard Green */
+  --color-brand-error: #EF4444;      /* High Severity Red */
+  --color-brand-card: #12141C;       /* Slate Obsidian Cards */
+  --color-brand-border: #2D3139;     /* Subtle Dark Border */
+  
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+  --font-mono-data: var(--font-mono), ui-monospace, SFMono-Regular;
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: #E2E8F0;                    /* Professional Light Slate Text */
+}
+
+/* MISSION CONTROL - DATA DENSE DARK MODE (Professional) */
+body::before {
+  display: none;
+}
+
+.glass-panel {
+  background: var(--color-brand-card);
+  border: 1px solid var(--color-brand-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.professional-card {
+  background: var(--color-brand-card);
+  border: 1px solid var(--color-brand-border);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.font-mono-data {
+  font-family: var(--font-mono-data);
+}
+
+/* MISSION-CRITICAL PULSE (SUBTLE) */
+@keyframes status-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.alert-indicator {
+  animation: status-pulse 2s infinite ease-in-out;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #2D3139;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Leaflet specifics - Dark Radar Visualization */
+.leaflet-container {
+  background: #000 !important;
+  filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(110%);
+}
+.leaflet-popup-content-wrapper {
+  background: #0A0C10;
+  color: #fff;
+  border: 1px solid var(--color-brand-border);
+  border-radius: 4px !important;
+}
+
+/* 🏛️ NATIONAL RESPONSE SYSTEM - EMERGENCY KEYFRAMES */
+@keyframes pulse-slow {
+  0%, 100% { border-width: 20px; opacity: 0.4; }
+  50% { border-width: 35px; opacity: 0.8; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex !important;
+  animation: marquee 20s linear infinite;
+}
+
+/* Ensure pulse effect on map circles is visible */
+.leaflet-interactive.animate-pulse {
+  animation: leaflet-pulse 2s infinite;
+}
+
+@keyframes leaflet-pulse {
+  0% { fill-opacity: 0.1; stroke-opacity: 0.2; transform: scale(1); }
+  50% { fill-opacity: 0.4; stroke-opacity: 0.6; transform: scale(1.1); }
+  100% { fill-opacity: 0.1; stroke-opacity: 0.2; transform: scale(1); }
+}
+
+.leaflet-pulse {
+  animation: leaflet-pulse 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes pulse-red {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(239, 68, 68, 0.8); }
+}
+
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}

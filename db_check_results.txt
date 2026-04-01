@@ -1,0 +1,12 @@
+Total users in database: 7
+
+--- Full User List with Location Check ---
+[Indore] ID: vic1, Email: vic_vic1@ndrs.gov.in, Role: victim, Lat: 22.7962809744985, Lng: 75.84275659060714
+[Indore] ID: vic_cluster_0, Email: vic_vic_cluster_0@ndrs.gov.in, Role: victim, Lat: 22.81115458012604, Lng: 75.83301765224996
+[Indore] ID: vic_cluster_1, Email: vic_vic_cluster_1@ndrs.gov.in, Role: victim, Lat: 22.77901385462958, Lng: 75.86659164638905
+[Indore] ID: vic_cluster_2, Email: vic_vic_cluster_2@ndrs.gov.in, Role: victim, Lat: 22.7703430360393, Lng: 75.82483349054094
+[Indore] ID: vic_cluster_3, Email: vic_vic_cluster_3@ndrs.gov.in, Role: victim, Lat: 22.77141041790531, Lng: 75.84792662480538
+[Indore] ID: vic_cluster_4, Email: vic_vic_cluster_4@ndrs.gov.in, Role: victim, Lat: 22.80463476660459, Lng: 75.83186294648554
+[Indore] ID: anonymous, Email: vic_anonymous@ndrs.gov.in, Role: victim, Lat: 22.73784398317663, Lng: 75.88210536503772
+
+CONCLUSION: All demo accounts are from Indore.
