@@ -21,11 +21,11 @@ export async function POST(req: Request) {
     let smsBody = '';
     
     if (type === 'warning') {
-      smsBody = `[NDRS ALERT] ${message}\nEvacuate low-lying areas. Stay safe.`;
+      smsBody = `[Crisora ALERT] ${message}\nEvacuate low-lying areas. Stay safe.`;
     } else if (type === 'panic') {
-      smsBody = `[NDRS URGENT] PANIC SIGNAL DETECTED. Officer dispatch requested.\nLocation: ${location?.lat || 'N/A'}, ${location?.lng || 'N/A'}\nMessage: ${message || 'Immediate help needed'}`;
+      smsBody = `[Crisora URGENT] PANIC SIGNAL DETECTED. Officer dispatch requested.\nLocation: ${location?.lat || 'N/A'}, ${location?.lng || 'N/A'}\nMessage: ${message || 'Immediate help needed'}`;
     } else {
-      smsBody = `[NDRS NOTIFICATION] ${message}`;
+      smsBody = `[Crisora NOTIFICATION] ${message}`;
     }
 
     const result = await client.messages.create({

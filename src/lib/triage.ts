@@ -12,7 +12,8 @@ export interface TriageResult {
   };
 }
 
-const haversineKm = (l1: { lat: number; lng: number }, l2: { lat: number; lng: number }) => {
+const haversineKm = (l1?: { lat: number; lng: number }, l2?: { lat: number; lng: number }) => {
+  if (!l1 || !l2 || typeof l1.lat !== 'number' || typeof l2.lat !== 'number') return 999999; // Safe fallback
   const R = 6371;
   const dLat = (l2.lat - l1.lat) * Math.PI / 180;
   const dLng = (l2.lng - l1.lng) * Math.PI / 180;

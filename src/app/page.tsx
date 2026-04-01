@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { MOCK_USERS } from "@/lib/mock-data";
 import { User } from "@/lib/types";
+import { Database, HardDrive, Shield, Activity, HeartHandshake, Users } from "lucide-react";
 
 // Role display metadata
 const ROLE_CONFIG: Record<string, {
@@ -95,15 +96,15 @@ export default function LandingPage() {
         <div className="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             {/* Emblem placeholder */}
-            <div className="w-14 h-14 rounded-full bg-[#1a3a6b] flex items-center justify-center shrink-0 text-white text-[10px] font-black tracking-widest border-2 border-[#c8922a]">
-              NDMA
+            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden border-2 border-[#c8922a] shadow-lg">
+              <img src="/logo.png" alt="Crisora Logo" className="w-full h-full object-cover" />
             </div>
             <div className="border-l border-slate-300 pl-5">
               <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-[0.22em] mb-0.5">
                 Ministry of Home Affairs — Government of India
               </p>
               <h1 className="text-lg font-bold text-[#1a3a6b] tracking-tight leading-none">
-                National Disaster Management System
+                Crisora Intelligence System
               </h1>
               <p className="text-[10px] font-semibold text-slate-500 tracking-wide mt-0.5">
                 Integrated Emergency Response Platform · Indore Region
@@ -124,8 +125,14 @@ export default function LandingPage() {
         {/* Sub-nav */}
         <div className="bg-[#1a3a6b] px-6">
           <div className="max-w-screen-xl mx-auto flex items-center gap-0 overflow-x-auto">
-            {["Dashboard Access", "Incident Reports", "Resource Registry", "Field Operations", "National Helpline: 1078"].map((item, i) => (
-              <div key={item} className={`px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap border-b-2 transition-colors cursor-default select-none ${i === 0 ? "text-white border-[#c8922a]" : "text-blue-200/60 border-transparent"}`}>
+            {["Dashboard Access", "Incident Reports", "Resource Registry", "Historical Analysis", "National Helpline: 1078"].map((item, i) => (
+              <div 
+                key={item} 
+                onClick={() => {
+                   if (item === "Historical Analysis") window.location.href = "/scenarios";
+                }}
+                className={`px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap border-b-2 transition-colors cursor-pointer select-none ${i === 0 ? "text-white border-[#c8922a]" : "text-blue-200/60 border-transparent hover:text-white"}`}
+              >
                 {item}
               </div>
             ))}
@@ -145,7 +152,7 @@ export default function LandingPage() {
             </h2>
             <p className="text-sm text-blue-200 max-w-2xl leading-relaxed">
               Select a verified role identity from the registry below to access the corresponding operational dashboard.
-              Access is restricted to authenticated personnel. All sessions are recorded per NDMA Protocol 2024-DR-7.
+              Access is restricted to authenticated personnel. All sessions are recorded per Crisora Protocol 2024-DR-7.
             </p>
           </div>
 
@@ -244,6 +251,31 @@ export default function LandingPage() {
             </section>
           );
         })}
+
+        {/* ── HISTORICAL ARCHIVE PROMOTION ───────────────────────────── */}
+        <section className="bg-[#0a1628] border border-[#c8922a]/30 rounded-2xl overflow-hidden relative group cursor-pointer" onClick={() => window.location.href = "/scenarios"}>
+           <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Database size={120} className="text-[#c8922a]" />
+           </div>
+           <div className="p-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-[#c8922a] flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,146,42,0.3)]">
+                 <HardDrive size={32} className="text-[#0a1628]" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Mission Intelligence & Historical Archive</h3>
+              <p className="text-slate-400 text-sm max-w-xl mb-8 leading-relaxed italic">
+                 "Understand the past to safeguard the future." Access the Crisora Tactical Archive containing data on over 8 regional catastrophes including the 1984 Bhopal tragedy and the 2001 Bhuj tremor. 
+              </p>
+              <div className="flex gap-4">
+                 <div className="px-6 py-3 bg-[#c8922a] hover:bg-[#e6b04a] text-[#0a1628] font-black text-[11px] uppercase tracking-[0.2em] rounded transition-all active:scale-95">
+                    Launch Tactical Archive
+                 </div>
+                 <div className="px-6 py-3 border border-slate-700 text-slate-400 font-bold text-[11px] uppercase tracking-[0.2em] rounded">
+                    8 Registered Scenarios
+                 </div>
+              </div>
+           </div>
+           <div className="h-1.5 w-full bg-[#c8922a]" />
+        </section>
       </main>
 
       {/* ── FOOTER ──────────────────────────────────────────────────── */}
@@ -256,7 +288,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-4">
               <span className="text-[9px] text-blue-300">Platform v2.1 · Indore Node</span>
               <span className="text-[9px] text-blue-300">|</span>
-              <span className="text-[9px] text-blue-300">© 2024 NDMA. All Rights Reserved.</span>
+              <span className="text-[9px] text-blue-300">© 2024 Crisora. All Rights Reserved.</span>
             </div>
           </div>
 

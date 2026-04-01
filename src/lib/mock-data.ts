@@ -169,72 +169,286 @@ export const MOCK_NEEDS: Need[] = [
 
 export const MOCK_SCENARIOS: Scenario[] = [
   {
-    id: "monsoon_guwahati_2026",
-    name: "Monsoon Flood Crisis – Indore City",
-    description: "Narmada river crosses the danger level by 3.2 meters, causing flash floods and urban landslides across Indore City city.",
-    disasterType: "flood",
-    severity: "high",
-    affectedPeople: 45000,
-    location: { lat: 22.7443, lng: 75.8377, radius: 20 },
-    weatherCondition: { rainfall: 145, windSpeed: 22, temperature: 26 },
+    id: "bhopal_gas_tragedy_1984",
+    name: "Bhopal Gas Tragedy (1984) ☠️",
+    description: "World's worst industrial disaster. 45 tons of MIC gas leak from Union Carbide plant.",
+    disasterType: "industrial",
+    severity: "critical",
+    affectedPeople: 500000,
+    location: { lat: 23.2847, lng: 77.4103, radius: 20 },
+    weatherCondition: { rainfall: 0, windSpeed: 5, temperature: 14 },
     timeline: [
-      { minute: 0, event: "Rainfall exceeds 100mm in 2 hours — Flash flood alert", requestCount: 0 },
-      { minute: 15, event: "Narmada breaches embankments at Indore City Ghat", requestCount: 45 },
-      { minute: 30, event: "Power outages reported in 60% of metro area", requestCount: 120 },
-      { minute: 60, event: "NDRF & SDMA joint command station established", requestCount: 250 },
-      { minute: 120, event: "Rescue ops ongoing — boats deployed at Narengi & Zoo Road", requestCount: 410 },
+      { minute: 0, event: "9:30 PM: Pipe cleaning begins at MIC plant", requestCount: 0 },
+      { minute: 60, event: "11:30 PM: MIC leak detected; ocular irritation reported", requestCount: 15 },
+      { minute: 90, event: "Midnight: Exothermic reaction in Tank E610; gas released", requestCount: 850 },
+      { minute: 120, event: "00:30 AM: Gas cloud blankets 20 sq km; mass pulmonary edema", requestCount: 2200 },
+      { minute: 180, event: "01:30 AM: Factory siren silent; panic in nearby colonies", requestCount: 5000 },
     ],
     requestTemplates: [
-      { need: "rescue", people: 4, urgency: "critical", location: [26.12, 91.71] },
-      { need: "medical", people: 1, urgency: "critical", location: [26.13, 91.72] },
-      { need: "food", people: 12, urgency: "medium", location: [26.11, 91.70] },
+      { need: "medical", people: 1, urgency: "critical", location: [23.2847, 77.4103] },
+      { need: "rescue", people: 4, urgency: "critical", location: [23.2850, 77.4110] },
+      { need: "water", people: 10, urgency: "high", location: [23.2800, 77.4000] },
     ],
-    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS },
+    historicalStats: {
+      deaths: 16000,
+      injured: 550000,
+      responseLag: "12 hours",
+      economicLoss: "₹15,000 Cr"
+    },
+    aiTacticalNodes: [
+      {
+        id: "bhopal_t60",
+        minute: 60,
+        category: "evacuation",
+        suggestion: "Broadcast immediate area-wide evacuation via public sirens and radio.",
+        historicalReality: "The factory's siren was not sounded to avoid alarming the neighborhood.",
+        predictedImpact: "Estimated 40% reduction in initial inhalation fatalities.",
+        impactWeight: 0.4
+      },
+      {
+        id: "bhopal_t120",
+        minute: 120,
+        category: "medical",
+        suggestion: "Release stockpile of Sodium Thiosulphate antidotes to local clinics.",
+        historicalReality: "Antidotal treatment was delayed due to lack of MIC toxicity data disclosure.",
+        predictedImpact: "Estimated 25% reduction in long-term respiratory failure cases.",
+        impactWeight: 0.25
+      }
+    ]
   },
   {
-    id: "monsoon_jaipur_2025",
-    name: "Monsoon Flash Flood – Indore",
-    description: "Heavy rainfall triggers a devastating flash flood across low-lying areas of Indore, displacing thousands.",
-    disasterType: "flood",
-    severity: "high",
-    affectedPeople: 2147,
-    location: { lat: 22.7412, lng: 75.8432, radius: 15 },
-    weatherCondition: { rainfall: 87, windSpeed: 25, temperature: 28 },
+    id: "bhuj_earthquake_2001",
+    name: "Bhuj Earthquake (2001) 🏗️",
+    description: "M7.6 Republic Day earthquake. Massive structural collapse across Kutch.",
+    disasterType: "earthquake",
+    severity: "critical",
+    affectedPeople: 1000000,
+    location: { lat: 23.3343, lng: 70.3644, radius: 50 },
+    weatherCondition: { rainfall: 0, windSpeed: 10, temperature: 18 },
     timeline: [
-      { minute: 0, event: "Heavy rainfall begins — IMD issues yellow alert", requestCount: 0 },
-      { minute: 5, event: "Reports of water rising in Mansarovar colony", requestCount: 12 },
-      { minute: 15, event: "Evacuation alerts issued for 3 sub-districts", requestCount: 45 },
-      { minute: 25, event: "Bridge at Durgapura collapses — road blocked", requestCount: 68 },
-      { minute: 30, event: "Water levels peak — NDRF deployed", requestCount: 87 },
-      { minute: 45, event: "Rescue ops begin — 12 boats operational", requestCount: 103 },
-      { minute: 60, event: "Rainfall decreases — relief camps open", requestCount: 124 },
-      { minute: 75, event: "Power outages in 6 wards — hospitals on generator", requestCount: 139 },
-      { minute: 90, event: "Situation stabilizing — 800 evacuated", requestCount: 147 },
+      { minute: 0, event: "08:46 AM: Main shock (M7.6) hits during Republic Day parade", requestCount: 0 },
+      { minute: 5, event: "Massive structural collapse in Bhuj, Anjar, Bhachau", requestCount: 500 },
+      { minute: 15, event: "Communication & power lines severed across Gujarat", requestCount: 1200 },
+      { minute: 120, event: "Army mobilizes; 'Operation Sahayata' launched", requestCount: 4500 },
     ],
     requestTemplates: [
-      { need: "shelter", people: 8, urgency: "high", location: [26.91, 75.78] },
-      { need: "food", people: 15, urgency: "medium", location: [26.92, 75.79] },
-      { need: "medical", people: 2, urgency: "critical", location: [26.90, 75.78] },
-      { need: "rescue", people: 5, urgency: "critical", location: [26.89, 75.77] },
-      { need: "water", people: 20, urgency: "high", location: [26.93, 75.80] },
+      { need: "rescue", people: 5, urgency: "critical", location: [23.3343, 70.3644] },
+      { need: "medical", people: 2, urgency: "critical", location: [23.3300, 70.3600] },
+      { need: "shelter", people: 20, urgency: "high", location: [23.3400, 70.3700] },
     ],
-    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS },
+    historicalStats: {
+      deaths: 20023,
+      injured: 166835,
+      responseLag: "8 hours",
+      economicLoss: "₹21,000 Cr"
+    },
+    aiTacticalNodes: [
+      {
+        id: "bhuj_t5",
+        minute: 5,
+        category: "rescue",
+        suggestion: "Deploy advanced K-9 search units and acoustic sensors to Bhachau city center.",
+        historicalReality: "Local villagers engaged in manual shoveling for over 15 hours before equipment arrived.",
+        predictedImpact: "Estimated 15% improvement in 'Golden Hour' live extraction rate.",
+        impactWeight: 0.15
+      }
+    ]
+  },
+  {
+    id: "kedarnath_floods_2013",
+    name: "Kedarnath 'Tsunami' (2013) 🌊",
+    description: "Himalayan cloudburst triggers Chorabari Lake breach and massive flash flood.",
+    disasterType: "flash_flood",
+    severity: "critical",
+    affectedPeople: 100000,
+    location: { lat: 30.7352, lng: 79.0669, radius: 10 },
+    weatherCondition: { rainfall: 315, windSpeed: 45, temperature: 4 },
+    timeline: [
+      { minute: 0, event: "June 16, 20:00: Chorabari glacier melt peaks", requestCount: 0 },
+      { minute: 60, event: "June 16, 21:00: Rambara town completely washed away", requestCount: 150 },
+      { minute: 600, event: "June 17, 06:45: Chorabari Lake breach; mass water release", requestCount: 800 },
+      { minute: 660, event: "June 17, 07:45: 50ft water wall hits Kedarnath temple city", requestCount: 1500 },
+    ],
+    requestTemplates: [
+      { need: "rescue", people: 10, urgency: "critical", location: [30.7352, 79.0669] },
+      { need: "food", people: 50, urgency: "high", location: [30.7300, 79.0600] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS },
+    historicalStats: {
+      deaths: 5748,
+      injured: 12000,
+      responseLag: "24 hours",
+      economicLoss: "₹4,500 Cr"
+    },
+    aiTacticalNodes: [
+      {
+        id: "keda_t600",
+        minute: 600,
+        category: "evacuation",
+        suggestion: "Immediate vertical evacuation of all pilgrims to Kedarnath temple terrace and upper levels.",
+        historicalReality: "Pilgrims were caught in the ground-level torrent while attempting to flee via valley paths.",
+        predictedImpact: "Estimated 30% reduction in flash-flood related fatalities.",
+        impactWeight: 0.3
+      }
+    ]
   },
   {
     id: "kerala_floods_2018",
-    name: "Kerala Floods 2018",
-    description: "Worst flood in Kerala in nearly a century. All 14 districts affected. 483 dead, 1.4M displaced.",
+    name: "Kerala Century Flood (2018) 🚣",
+    description: "Unprecedented monsoon leads to simultaneous opening of 35 major dams.",
     disasterType: "flood",
     severity: "critical",
     affectedPeople: 1400000,
-    location: { lat: 22.7261, lng: 75.8954, radius: 80 },
+    location: { lat: 10.0159, lng: 76.3419, radius: 80 },
     weatherCondition: { rainfall: 164, windSpeed: 38, temperature: 27 },
     timeline: [
-      { minute: 0, event: "Red alert issued across all 14 districts — Aug 8, 2018", requestCount: 0 },
-      { minute: 60, event: "Navy, Air Force, NDRF mobilize — 58 helicopters airborne", requestCount: 2100 },
+      { minute: 0, event: "Aug 14: Critical rain phase; state on red alert", requestCount: 0 },
+      { minute: 1440, event: "Aug 15: 35 dams opened simultaneously; 'Operation Madad' begins", requestCount: 2100 },
+      { minute: 2880, event: "Aug 16: Peak flooding; 1.4 million people displaced", requestCount: 5500 },
     ],
     requestTemplates: [
-      { need: "rescue", people: 12, urgency: "critical", location: [10.10, 76.35] },
+      { need: "rescue", people: 12, urgency: "critical", location: [10.0159, 76.3419] },
+      { need: "food", people: 100, urgency: "high", location: [10.0000, 76.3000] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS },
+    historicalStats: {
+      deaths: 483,
+      injured: 140,
+      responseLag: "6 hours",
+      economicLoss: "₹31,000 Cr"
+    },
+    aiTacticalNodes: [
+      {
+        id: "kera_t0",
+        minute: 0,
+        category: "logistics",
+        suggestion: "Pre-emptive controlled dam release at 15% capacity to prevent total peak breach.",
+        historicalReality: "Officials were forced to open 35 floodgates simultaneously for the first time in history.",
+        predictedImpact: "Estimated 20% reduction in downstream urban flood velocity.",
+        impactWeight: 0.2
+      }
+    ]
+  },
+  {
+    id: "latur_earthquake_1993",
+    name: "Latur Earthquake (1993) 🏚️",
+    description: "M6.2 intraplate earthquake in Maharashtra. Epicenter at Killari.",
+    disasterType: "earthquake",
+    severity: "high",
+    affectedPeople: 100000,
+    location: { lat: 18.2392, lng: 76.5861, radius: 30 },
+    weatherCondition: { rainfall: 0, windSpeed: 8, temperature: 22 },
+    timeline: [
+      { minute: 0, event: "03:56 AM: Main shock strikes while villages sleep", requestCount: 0 },
+      { minute: 1, event: "Killari and 52 villages flattened instantly", requestCount: 800 },
+      { minute: 60, event: "05:00 AM: First responders find 10k dead across ruins", requestCount: 2500 },
+    ],
+    requestTemplates: [
+      { need: "rescue", people: 8, urgency: "critical", location: [18.2392, 76.5861] },
+      { need: "medical", people: 10, urgency: "critical", location: [18.2300, 76.5800] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+  },
+  {
+    id: "odisha_super_cyclone_1999",
+    name: "Odisha 'Deadly' Super Cyclone (1999) 🌪️",
+    description: "260km/h winds hit Paradip. Quasi-stationary for 30 hours over coast.",
+    disasterType: "cyclone",
+    severity: "critical",
+    affectedPeople: 15000000,
+    location: { lat: 20.1764, lng: 86.4326, radius: 100 },
+    weatherCondition: { rainfall: 445, windSpeed: 260, temperature: 24 },
+    timeline: [
+      { minute: 0, event: "Oct 29, 11:30 AM: Landfall at Paradip with 260km/h winds", requestCount: 0 },
+      { minute: 60, event: "8-meter storm surge wipes out Ersama coast", requestCount: 5000 },
+      { minute: 1800, event: "30 hours stationary over coast; extreme flooding", requestCount: 12000 },
+    ],
+    requestTemplates: [
+      { need: "rescue", people: 50, urgency: "critical", location: [20.1764, 86.4326] },
+      { need: "food", people: 1000, urgency: "high", location: [20.2000, 86.5000] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+  },
+  {
+    id: "cyclone_fani_2019",
+    name: "Cyclone Fani (2019) 🌀",
+    description: "Extremely Severe Cyclonic Storm. Mass evacuation of 1.2M in 24h.",
+    disasterType: "cyclone",
+    severity: "high",
+    affectedPeople: 1200000,
+    location: { lat: 19.8135, lng: 85.8312, radius: 40 },
+    weatherCondition: { rainfall: 200, windSpeed: 185, temperature: 28 },
+    timeline: [
+      { minute: 0, event: "May 3, 08:00 AM: Landfall near Puri, Odisha", requestCount: 0 },
+      { minute: 120, event: "High-speed winds hit Bhubaneswar and Cuttack", requestCount: 400 },
+      { minute: 240, event: "Infrastructure damage assessment; grid failure", requestCount: 1200 },
+    ],
+    requestTemplates: [
+      { need: "shelter", people: 100, urgency: "high", location: [19.8135, 85.8312] },
+      { need: "water", people: 500, urgency: "high", location: [19.8000, 85.8000] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+  },
+  {
+    id: "indian_ocean_tsunami_2004",
+    name: "Indian Ocean Tsunami (2004) 🌊",
+    description: "Mega-tsunami triggered by M9.1 Sumatra earthquake.",
+    disasterType: "flood",
+    severity: "critical",
+    affectedPeople: 16000,
+    location: { lat: 11.6234, lng: 92.7265, radius: 100 },
+    weatherCondition: { rainfall: 0, windSpeed: 15, temperature: 30 },
+    timeline: [
+      { minute: 0, event: "07:58 AM: M9.1 Sumatra Earthquake strikes", requestCount: 0 },
+      { minute: 15, event: "08:13 AM: Tsunami hits Andaman & Nicobar islands", requestCount: 1200 },
+      { minute: 90, event: "09:28 AM: Tsunami hits Tamil Nadu mainland coast", requestCount: 8000 },
+      { minute: 120, event: "09:58 AM: 10-meter waves hit Nagapattinam & Cuddalore", requestCount: 15000 },
+    ],
+    requestTemplates: [
+      { need: "medical", people: 20, urgency: "critical", location: [11.6234, 92.7265] },
+      { need: "rescue", people: 10, urgency: "critical", location: [10.7672, 79.8444] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+  },
+  {
+    id: "uttarakhand_wildfires_2016",
+    name: "Uttarakhand Fires (2016) 🔥",
+    description: "Mega-wildfire season destroying 4,500 hectares of forest.",
+    disasterType: "industrial",
+    severity: "high",
+    affectedPeople: 5000,
+    location: { lat: 30.0668, lng: 79.0193, radius: 60 },
+    weatherCondition: { rainfall: 0, windSpeed: 12, temperature: 42 },
+    timeline: [
+      { minute: 0, event: "April 24: Fires escalate; local suppression failing", requestCount: 0 },
+      { minute: 1440, event: "April 30: 1000+ incidents; NDRF & IAF 'Operation' begins", requestCount: 450 },
+      { minute: 5760, event: "May 3: Rain finally aids fire suppression efforts", requestCount: 800 },
+    ],
+    requestTemplates: [
+      { need: "rescue", people: 5, urgency: "critical", location: [30.0668, 79.0193] },
+      { need: "medical", people: 2, urgency: "high", location: [30.1000, 79.1000] },
+    ],
+    availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
+  },
+  {
+    id: "cyclone_amphan_2020",
+    name: "Cyclone Amphan (2020) ⛈️",
+    description: "Super Cyclone during COVID-19. Devastating Category 4 landfall.",
+    disasterType: "cyclone",
+    severity: "critical",
+    affectedPeople: 10000000,
+    location: { lat: 21.6500, lng: 88.2000, radius: 80 },
+    weatherCondition: { rainfall: 300, windSpeed: 155, temperature: 27 },
+    timeline: [
+      { minute: 0, event: "May 20, 14:30: Landfall near Bakkhali, Sundarbans", requestCount: 0 },
+      { minute: 240, event: "18:30: 155km/h eye crosses Kolkata; mass destruction", requestCount: 8000 },
+      { minute: 720, event: "May 21: Dissipates over Bangladesh; 1M homes damaged", requestCount: 15000 },
+    ],
+    requestTemplates: [
+      { need: "rescue", people: 10, urgency: "critical", location: [21.6500, 88.2000] },
+      { need: "shelter", people: 200, urgency: "high", location: [22.5726, 88.3639] },
     ],
     availableResources: { volunteers: MOCK_VOLUNTEERS, ngos: MOCK_NGOS }
   },

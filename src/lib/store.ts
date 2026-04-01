@@ -20,8 +20,15 @@ interface AppState {
   events: PulseEvent[];
   activeIncident: Scenario | null;
   isMassPanicActive: boolean;
+  prognosticData: {
+    score: number;
+    latestIntel: string[];
+    breakdown: { weather: number; geospatial: number; intelligence: number };
+    lastUpdated: string;
+  };
   
   // 🏛️ PERSISTENT ACTIONS
+  refreshPrognostics: () => void;
   setActiveIncident: (incident: Scenario | null) => void;
   setCurrentUser: (user: User | null) => void;
   setScenarios: (scenarios: Scenario[]) => void;
@@ -43,6 +50,8 @@ interface AppState {
   resetSimulation: () => void;
 }
 
+import { calculateRiskScore, getSimulatedIntelligence } from './prognostics';
+
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
@@ -59,6 +68,30 @@ export const useAppStore = create<AppState>()(
       events: [],
       activeIncident: null,
       isMassPanicActive: false,
+      prognosticData: {
+        score: 12,
+        latestIntel: ["SENTINEL: Standard telemetry active. Sector Indore nominal."],
+        breakdown: { weather: 5, geospatial: 4, intelligence: 3 },
+        lastUpdated: new Date().toISOString()
+      },
+
+      refreshPrognostics: () => {
+        const { activeIncident, riskZones, isMassPanicActive, setMassPanicActive } = get();
+        const intel = getSimulatedIntelligence(isMassPanicActive);
+        const result = calculateRiskScore(activeIncident, riskZones, intel);
+        
+        set({ 
+          prognosticData: {
+            ...result,
+            lastUpdated: new Date().toISOString()
+          }
+        });
+
+        // 🚨 AUTO-ESCALATION THRESHOLD
+        if (result.score >= 70 && !isMassPanicActive) {
+          setMassPanicActive(true);
+        }
+      },
 
       rehydrateFromDB: async () => {
          try {
@@ -74,6 +107,7 @@ export const useAppStore = create<AppState>()(
 
       setActiveIncident: (activeIncident) => set((state) => {
         syncChannel?.postMessage({ type: 'SET_ACTIVE_INCIDENT', payload: activeIncident });
+        setTimeout(() => get().refreshPrognostics(), 500); // Trigger analysis
         return { activeIncident };
       }),
 

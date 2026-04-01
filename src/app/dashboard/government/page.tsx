@@ -3,7 +3,8 @@
 import DashboardLayout from '@/components/DashboardLayout';
 import { useAppStore } from '@/lib/store';
 import { useState, useEffect } from 'react';
-import { BrainCircuit, Send, PhoneCall, Radio, Activity, Users, HeartHandshake, AlertTriangle, Building2, Shield, LogOut, ShieldAlert, Zap } from 'lucide-react';
+import { BrainCircuit, Send, PhoneCall, Radio, Activity, Users, HeartHandshake, AlertTriangle, Building2, Shield, LogOut, ShieldAlert, Zap, Target, TrendingUp } from 'lucide-react';
+import { runPulseOracle, PulseOracleResponse } from '@/lib/agents';
 import { LiveMap } from '@/components/Map';
 import TacticalSitRep from '@/components/simulation/TacticalSitRep';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,7 +13,7 @@ import { Need } from '@/lib/types';
 import clsx from 'clsx';
 
 export default function GovernmentDashboard() {
-  const { currentUser, needs, volunteers, ngos, activeIncident, riskZones, announcements, addAnnouncement, isMassPanicActive } = useAppStore();
+  const { currentUser, needs, volunteers, ngos, tasks, activeIncident, riskZones, announcements, addAnnouncement, isMassPanicActive } = useAppStore();
   const [mounted, setMounted] = useState(false);
 
   // Map layer visibility toggles
@@ -44,25 +45,24 @@ export default function GovernmentDashboard() {
   const [calling, setCalling] = useState(false);
   const [smsSending, setSmsSending] = useState(false);
 
-  // AI Insights State
-  const [aiAdvisory, setAiAdvisory] = useState<string | null>(
-     "SYSTEM STANDBY: All districts reporting nominal baseline activity. Awaiting critical geospatial shifts."
-  );
+  // AI Insights State (NDRS Strategic Advisor)
+  const [advice, setAdvice] = useState<PulseOracleResponse | null>(null);
 
   useEffect(() => {
     setMounted(true);
     
-    // Auto-generate AI Insights based on current state
-    const clusterAlert = announcements.find(a => 
-      a.urgency === 'critical' && a.message.includes('MASS_DISTRESS_CLUSTER')
+    // 🧠 AI Strategic Analysis Loop
+    const resp = runPulseOracle(
+      'government',
+      currentUser,
+      needs,
+      volunteers,
+      ngos,
+      tasks,
+      isMassPanicActive
     );
-
-    if (clusterAlert) {
-       setAiAdvisory(`🚨 GEOSPATIAL ANOMALY DETECTED. 15+ SIGNALS IN 3KM RAD. COMMAND UPDATED: NGOs_INFORMED, VOLUNTEERS_DISPATCHED. ACTION: MONITOR SITUATION.`);
-    } else if (activeIncident) {
-      setAiAdvisory(`SYSTEM ADVISORY: INITIATE HOSPITAL ALERT. DISPATCH RELIEF RESOURCES TO COORDS [${activeIncident.location.lat.toFixed(2)}, ${activeIncident.location.lng.toFixed(2)}]. IMPACT RADIUS: 2.4KM.`);
-    }
-  }, [activeIncident, announcements]);
+    setAdvice(resp);
+  }, [needs.length, volunteers.length, tasks.length, isMassPanicActive, activeIncident]);
 
   if (!mounted) return null;
 
@@ -127,26 +127,26 @@ export default function GovernmentDashboard() {
                   Critical Mass Distress Detected — Alpha Priority Protocol Active
                 </span>
               </div>
-              <span className="text-[8px] font-mono text-red-400 uppercase tracking-widest shrink-0">NDMA · Sector 04</span>
+              <span className="text-[8px] font-mono text-red-400 uppercase tracking-widest shrink-0">Crisora · Sector 04</span>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col w-full h-full bg-[#0d1117] font-sans">
+      <div className="flex flex-col w-full h-screen overflow-hidden bg-[#0d1117] font-sans">
         
         {/* GOI TOP BAR */}
         <div className="bg-[#0a1628] border-b-4 border-[#c8922a] px-6 py-3 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#c8922a] flex items-center justify-center text-[#0a1628] font-black text-[10px] shrink-0 border-2 border-[#e6b04a]">
-              NDMA
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border-2 border-[#e6b04a] shadow-lg">
+              <img src="/logo.png" alt="Crisora Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="text-[8px] font-bold text-slate-500 uppercase tracking-[0.18em] mb-0.5">
                 Government of India — Ministry of Home Affairs
               </p>
               <h1 className="text-base font-bold text-slate-100 tracking-wide font-serif">
-                National Disaster Command Centre
+                Crisora Strategic Command Centre
                 <span className="ml-2 text-[#c8922a] font-black text-sm">· NEXUS</span>
               </h1>
             </div>
@@ -213,45 +213,12 @@ export default function GovernmentDashboard() {
           </div>
         </div>
 
-        {/* LIVE STATS TICKER */}
-        <div className="grid grid-cols-2 md:grid-cols-4 border-b border-[#1e2d3d] bg-[#080d14] shrink-0">
-          {[
-            { label: 'Active Incidents', value: needs.filter(n => n.urgency_level > 80).length, color: 'text-red-400' },
-            { label: 'Pending Needs', value: needs.filter(n => n.status === 'pending').length, color: 'text-amber-400' },
-            { label: 'Volunteers Ready', value: volunteers.filter(v => v.online).length, color: 'text-emerald-400' },
-            { label: 'NGO Units Active', value: ngos.length, color: 'text-blue-400' },
-          ].map((stat, i) => (
-            <div key={i} className="py-3 px-6 border-r border-[#1e2d3d] last:border-r-0 text-center">
-              <div className={clsx("text-xl font-bold mb-0.5", stat.color)}>{stat.value}</div>
-              <div className="text-[8px] text-slate-700 uppercase tracking-widest font-bold">{stat.label}</div>
-            </div>
-          ))}
-        </div>
 
-        {/* AI ADVISORY BAND */}
-        <div className="bg-[#0f1923] border-b border-[#1e2d3d] px-6 py-3 flex items-center gap-4 shrink-0">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-7 h-7 bg-blue-900/60 border border-blue-700/50 rounded flex items-center justify-center">
-              <BrainCircuit size={14} className="text-blue-400" />
-            </div>
-            <span className="text-[8px] font-bold text-blue-500 uppercase tracking-[0.2em] whitespace-nowrap">AI Advisory</span>
-          </div>
-          <div className="w-px h-6 bg-[#1e2d3d] shrink-0" />
-          <motion.p
-            key={aiAdvisory}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-[10px] font-bold text-slate-400 tracking-wide truncate font-mono"
-          >
-            {aiAdvisory}
-          </motion.p>
-        </div>
-
-        {/* 🗺️ SPLIT COMMAND CENTER (80/20) */}
-        <div className="flex-1 flex flex-col lg:flex-row gap-0 min-h-0 border-t border-[#1e2d3d]">
+        {/* 🗺️ SPLIT COMMAND CENTER (GIS OPTIMIZED) */}
+        <div className="flex-1 flex flex-row overflow-hidden">
           
-          {/* LARGE COMMAND MAP */}
-          <div className="flex-1 bg-[#080d14] border-r border-[#1e2d3d] overflow-hidden relative">
+          {/* LARGE COMMAND MAP (PRIMARY DROPORTIONS) */}
+          <div className="flex-1 bg-[#080d14] overflow-hidden relative">
              {/* Map Header Overlay */}
              <div className="absolute top-4 left-4 z-[1000] flex flex-col gap-3">
                 <div className="bg-[#0a1628]/90 backdrop-blur border border-[#c8922a]/40 px-4 py-2 rounded flex flex-col gap-1">
@@ -261,7 +228,7 @@ export default function GovernmentDashboard() {
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-[11px] font-bold text-slate-200 tracking-wide font-serif">
-                      NDMA · Sector 04 · Live Feed
+                      Crisora · Sector 04 · Live Feed
                     </span>
                   </div>
                 </div>
@@ -298,7 +265,117 @@ export default function GovernmentDashboard() {
           </div>
 
           {/* COMPACT CONTROL HUB */}
-          <div className="w-full lg:w-[380px] flex flex-col shrink-0 h-full overflow-hidden bg-[#0d1117]">
+          {/* MISSION INTELLIGENCE & CONTROL SIDEBAR */}
+          <div className="w-[400px] flex flex-col shrink-0 bg-[#0d1117] border-l border-[#1e2d3d] overflow-y-auto custom-scrollbar">
+             
+             {/* 🎖️ LIVE STATS TICKER (SIDEBAR VERTICAL) */}
+             <div className="grid grid-cols-2 border-b border-[#1e2d3d] bg-[#0c131c]">
+                {[
+                    { label: 'Active Incidents', value: needs.filter(n => n.urgency_level > 80).length, color: 'text-red-400' },
+                    { label: 'Pending Needs', value: needs.filter(n => n.status === 'pending').length, color: 'text-amber-400' },
+                    { label: 'Volunteers Ready', value: volunteers.filter(v => v.online).length, color: 'text-emerald-400' },
+                    { label: 'NGO Units Active', value: ngos.length, color: 'text-blue-400' },
+                ].map((stat, i) => (
+                    <div key={i} className="py-4 px-5 border-b border-r border-[#1e2d3d] last:border-b-0 text-center bg-[#0a1628]/40">
+                        <div className={clsx("text-lg font-black", stat.color)}>{stat.value}</div>
+                        <div className="text-[7px] text-slate-600 uppercase tracking-widest font-black mt-1">{stat.label}</div>
+                    </div>
+                ))}
+             </div>
+
+             {/* 🧠 AI PREDICTIVE INTELLIGENCE (SIDEBAR COMPACT) */}
+             <div className="p-5 border-b border-[#1e2d3d] bg-[#0c131c]/50">
+                <div className="flex items-center gap-2 mb-5">
+                    <BrainCircuit size={14} className="text-[#c8922a]" />
+                    <h3 className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em]">Risk Analysis Sentinel</h3>
+                </div>
+                
+                <div className="flex items-center gap-6 mb-6">
+                    <div className="relative w-20 h-20 flex items-center justify-center shrink-0">
+                        <svg className="w-full h-full -rotate-90">
+                            <circle cx="40" cy="40" r="36" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-slate-800" />
+                            <circle cx="40" cy="40" r="36" stroke="currentColor" strokeWidth="6" fill="transparent" 
+                                    className={clsx(
+                                        "transition-all duration-1000",
+                                        useAppStore.getState().prognosticData.score >= 70 ? "text-red-500" : "text-[#c8922a]"
+                                    )}
+                                    strokeDasharray={226}
+                                    strokeDashoffset={226 - (226 * useAppStore.getState().prognosticData.score) / 100}
+                            />
+                        </svg>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <span className="text-lg font-black text-white">{useAppStore.getState().prognosticData.score}%</span>
+                        </div>
+                    </div>
+                    <div className="flex-1 space-y-2">
+                        {Object.entries(useAppStore.getState().prognosticData.breakdown).map(([key, val]) => (
+                            <div key={key}>
+                                <div className="flex justify-between text-[7px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                    <span>{key}</span>
+                                    <span>{val}%</span>
+                                </div>
+                                <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                    <motion.div initial={{ width: 0 }} animate={{ width: `${val}%` }} className="h-full bg-blue-500/40" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="space-y-3 mt-4 bg-[#080d14] p-4 rounded-xl border border-blue-500/20">
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                            <Target size={12} className="text-blue-400" />
+                            <span className="text-[7px] font-black text-blue-500 uppercase tracking-widest">Neural Reasoning Path</span>
+                        </div>
+                        <span className="text-[6px] font-mono text-slate-700">Sentinel_v4.2</span>
+                    </div>
+                    <p className="text-[10px] text-slate-300 font-bold italic leading-relaxed border-l-2 border-blue-500/40 pl-3">
+                        "{advice?.message || 'Analyzing mission vectors...'}"
+                    </p>
+                    <div className="flex items-center gap-1.5 mt-2">
+                       <TrendingUp size={10} className="text-emerald-500" />
+                       <span className="text-[7px] font-black text-emerald-500 uppercase tracking-widest">Simulated Impact: +12% Efficiency</span>
+                    </div>
+                </div>
+             </div>
+
+             {/* 📰 AI ADVISORY TICKER (ACTIVE SUGGESTIONS) */}
+             <div className="bg-[#0f1923] border-b border-[#1e2d3d] px-5 py-5 flex flex-col gap-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-3xl" />
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <ShieldAlert size={14} className="text-blue-400 animate-pulse" />
+                        <span className="text-[9px] font-black text-blue-500 uppercase tracking-[0.2em]">Strategic AI Suggestion</span>
+                    </div>
+                </div>
+                
+                {advice?.suggestion ? (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
+                    <p className="text-sm font-bold text-slate-200 leading-snug">
+                       {advice.suggestion.label} Plan Initialized
+                    </p>
+                    <button 
+                      onClick={() => {
+                        const { type, payload } = advice.suggestion!;
+                        if (type === 'broadcast') {
+                          setMsg(payload.message);
+                        }
+                        // Manual activation required for safety
+                      }}
+                      className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      <Zap size={14} /> Stage Action Directive
+                    </button>
+                  </div>
+                ) : (
+                  <div className="py-2">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-relaxed">
+                       Neural engine at baseline. <br/> No critical deviations suggested.
+                    </p>
+                  </div>
+                )}
+             </div>
              
              {/* REGISTRY: MISSION PRIORITY */}
              <div className="flex-1 flex flex-col overflow-hidden border-b border-[#1e2d3d]">

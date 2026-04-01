@@ -6,8 +6,12 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Aura - Disaster Relief Coordination Platform",
+  title: "Crisora - Disaster Relief Coordination Platform",
   description: "Real-time AI-powered disaster response coordination",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

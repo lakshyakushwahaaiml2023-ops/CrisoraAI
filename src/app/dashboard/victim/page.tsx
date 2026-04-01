@@ -561,7 +561,7 @@ export default function VictimDashboard() {
                       {[
                         { u: 'Sunit B.', m: 'Water levels rising in Sector 4. Anyone has extra sandbags?', t: '2m ago', s: false },
                         { u: 'Meera K.', m: 'Avoid Route 8. Tree fell near the park.', t: '15m ago', s: false },
-                        { u: 'NDRS_ALPHA', m: 'Relief camp activated at City School. Proceed with caution.', t: '30m ago', s: true },
+                        { u: 'Crisora_Alpha', m: 'Relief camp activated at City School. Proceed with caution.', t: '30m ago', s: true },
                         { u: 'Volunteer Rajesh', m: 'I have medicine kits for elderly in Block B.', t: '45m ago', s: false },
                       ].map((chat, i) => (
                         <div key={i} className={clsx(

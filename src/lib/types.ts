@@ -108,16 +108,53 @@ export interface RiskZone {
   forecast_time: string;
 }
 
+export interface AITacticalNode {
+  id: string;
+  minute: number;
+  suggestion: string;
+  category: 'evacuation' | 'medical' | 'logistics' | 'rescue';
+  historicalReality: string;
+  predictedImpact: string;
+  impactWeight: number; // e.g. 0.3 for a 30% reduction in deaths
+}
+
+export interface HistoricalStats {
+  deaths: number;
+  injured: number;
+  responseLag: string; // e.g. "4.5 hours"
+  economicLoss: string;
+}
+
 export interface Scenario {
   id: string;
   name: string;
   description: string;
-  disasterType: string;
-  severity: string;
+  disasterType: 'flood' | 'cyclone' | 'flash_flood' | 'earthquake' | 'industrial';
+  severity: 'low' | 'medium' | 'high' | 'critical';
   affectedPeople: number;
   location: { lat: number; lng: number; radius: number };
   weatherCondition: { rainfall: number; windSpeed: number; temperature: number };
-  timeline: { minute: number; event: string; requestCount: number }[];
-  requestTemplates: any[];
-  availableResources: any;
+  timeline: {
+    minute: number;
+    event: string;
+    requestCount: number;
+  }[];
+  requestTemplates: {
+    need: NeedType;
+    people: number;
+    urgency: UrgencyLevel;
+    location: [number, number];
+  }[];
+  availableResources: {
+    volunteers: Volunteer[];
+    ngos: NGO[];
+  };
+  historicalStats?: HistoricalStats;
+  aiTacticalNodes?: AITacticalNode[];
+}
+
+export interface PredictiveIntelligence {
+  score: number;
+  latestIntel: string[];
+  lastUpdated: string;
 }

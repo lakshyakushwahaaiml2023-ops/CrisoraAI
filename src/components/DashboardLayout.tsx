@@ -11,6 +11,8 @@ import {
 import Link from 'next/link';
 import clsx from 'clsx';
 import TacticalAlertSystem from './simulation/TacticalAlertSystem';
+import { AIPulseChatbot } from './AIPulseChatbot';
+import { AnimatePresence } from 'framer-motion';
 
 export default function DashboardLayout({ children, role }: { children: React.ReactNode, role: string }) {
   const router = useRouter();
@@ -60,8 +62,8 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                {getRoleIcon()}
             </div>
             <div>
-              <h1 className="font-black text-2xl leading-none tracking-tighter text-[#1a3a6b]">NDRS</h1>
-              <p className="text-[9px] font-black text-blue-600 uppercase tracking-[0.25em] mt-1 italic leading-tight">National_Response</p>
+              <h1 className="font-black text-2xl leading-none tracking-tighter text-[#1a3a6b]">Crisora</h1>
+              <p className="text-[9px] font-black text-blue-600 uppercase tracking-[0.25em] mt-1 italic leading-tight">AI Disaster Intelligence</p>
             </div>
           </div>
 
@@ -114,7 +116,7 @@ export default function DashboardLayout({ children, role }: { children: React.Re
         <header className="md:hidden flex items-center justify-between p-5 border-b border-slate-200 bg-white z-50 shadow-sm">
            <div className="flex items-center gap-3">
               {getRoleIcon()}
-              <span className="font-black text-xl text-[#1a3a6b] tracking-tighter">NDRS</span>
+              <span className="font-black text-xl text-[#1a3a6b] tracking-tighter">Crisora</span>
            </div>
            <button onClick={() => { setCurrentUser(null); router.push('/'); }} className="p-2 bg-slate-50 border border-slate-200 rounded-xl">
              <LogOut size={18} className="text-slate-400" />
@@ -191,27 +193,9 @@ export default function DashboardLayout({ children, role }: { children: React.Re
         )}
 
         {/* PAGE CONTENT CONTAINER */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10 w-full">
+        <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10 w-full min-h-0">
            {children}
         </div>
-
-        {/* SYSTEM STATUS FOOTER (Official Institutional) */}
-        <footer className="h-10 border-t border-[#1a3a6b]/10 bg-[#1a3a6b] flex items-center justify-between px-8 text-[9px] font-bold uppercase tracking-[0.2em] text-white/60">
-           <div className="flex items-center gap-8">
-              <div className="flex items-center gap-2">
-                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-                 GRID: LIVE
-              </div>
-              <div className="flex items-center gap-2 text-[#c8922a]">
-                 <div className="w-1.5 h-1.5 bg-[#c8922a] rounded-full animate-pulse" />
-                 NDMA-RELAY: 107.5
-              </div>
-           </div>
-           <div className="flex items-center gap-4">
-              <span className="text-white/30 tracking-widest text-[8px]">PROTOCOL_v2.5_NODE_INDORE</span>
-              <span className="text-[#c8922a] font-black tabular-nums">{new Date().toLocaleTimeString('en-IN', { hour12: false })} IST</span>
-           </div>
-        </footer>
       </main>
 
       <style jsx global>{`
@@ -220,8 +204,10 @@ export default function DashboardLayout({ children, role }: { children: React.Re
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
       `}</style>
+      
+      {/* 🏥 UNIVERSAL AI PULSE CHATBOT */}
+      <AIPulseChatbot />
     </div>
   );
 }
 
-import { AnimatePresence } from 'framer-motion';
