@@ -14,7 +14,8 @@ import {
   BrainCircuit,
   Terminal,
   Zap,
-  Info
+  Info,
+  Users
 } from "lucide-react";
 import { runAegisFieldAgent, FieldDirective } from "@/lib/agents";
 import { useState, useEffect } from "react";
@@ -381,5 +382,3 @@ export default function VolunteerDashboard() {
     </DashboardLayout>
   );
 }
-
-import { Users } from "lucide-react";

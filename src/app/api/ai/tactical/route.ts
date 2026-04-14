@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   let need: any = {};
-  
+
   try {
     const body = await req.json();
     need = body.need || {};
@@ -47,9 +47,9 @@ export async function POST(req: Request) {
 
       if (response.ok) {
         const data = await response.json();
-        return NextResponse.json({ 
-            advice: data.choices[0].message.content,
-            timestamp: new Date().toISOString()
+        return NextResponse.json({
+          advice: data.choices[0].message.content,
+          timestamp: new Date().toISOString()
         });
       }
     }
@@ -57,17 +57,17 @@ export async function POST(req: Request) {
     // 🛰️ HIGH-FIDELITY TACTICAL FALLBACK (Field Unit Mode)
     const urgency = need.urgency_label || 'high';
     const dist = need.distance || '2.4';
-    
-    return NextResponse.json({ 
-        advice: `TACTICAL_SUMMARY: Sector ${need.id?.slice(-4) || 'ALPHA'} requires immediate ${need.need_type?.toUpperCase() || 'GENERAL'} intervention. Priority: ${urgency.toUpperCase()}. Proximity: ${dist}km. High skill-compatibility detected. \nFIELD_ACTION: Secure mission perimeter. Initialize triage protocol. Deploy specialized ${need.need_type || 'emergency'} kit.`,
-        timestamp: new Date().toISOString()
+
+    return NextResponse.json({
+      advice: `TACTICAL_SUMMARY: Sector ${need.id?.slice(-4) || 'ALPHA'} requires immediate ${need.need_type?.toUpperCase() || 'GENERAL'} intervention. Priority: ${urgency.toUpperCase()}. Proximity: ${dist}km. High skill-compatibility detected. \nFIELD_ACTION: Secure mission perimeter. Initialize triage protocol. Deploy specialized ${need.need_type || 'emergency'} kit.`,
+      timestamp: new Date().toISOString()
     });
 
   } catch (error) {
     console.error('AI Tactical Error:', error);
-    return NextResponse.json({ 
-        advice: `TACTICAL_ADVICE: Mission logic synced with baseline survival parameters. Proceed to Sector ${need.id?.slice(-4) || 'ALPHA'} and establish comms. \nFIELD_ACTION: Prioritize life-saving measures.`,
-        timestamp: new Date().toISOString()
+    return NextResponse.json({
+      advice: `TACTICAL_ADVICE: Mission logic synced with baseline survival parameters. Proceed to Sector ${need.id?.slice(-4) || 'ALPHA'} and establish comms. \nFIELD_ACTION: Prioritize life-saving measures.`,
+      timestamp: new Date().toISOString()
     });
   }
 }
